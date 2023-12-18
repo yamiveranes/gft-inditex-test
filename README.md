@@ -1,0 +1,1 @@
+# gft-inditex-test
