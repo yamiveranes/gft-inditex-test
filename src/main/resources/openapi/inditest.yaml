@@ -1,0 +1,96 @@
+---
+openapi: 3.0.1
+info:
+  title: Inditex Test API
+  description: ''
+  termsOfService: terms
+  contact:
+    email: "test@test.dev"
+  license:
+    name: GNU
+  version: '1.0'
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+tags:
+- name: Price
+  description: Price API. Contiene las operaciones sobre las tarifas de precios de
+    los productos.
+paths:
+  "/price":
+    get:
+      tags:
+      - Price
+      summary: Obtiene el precio final y la tarifa a aplicar para un producto de una
+        marca
+      operationId: findPrice
+      parameters:
+      - name: brandId
+        in: query
+        description: Identificador de la cadena
+        required: true
+        schema:
+          minimum: 1
+          type: integer
+          format: int32
+        example: 1
+      - name: productId
+        in: query
+        description: Identificador del producto
+        required: true
+        schema:
+          minimum: 1
+          type: integer
+          format: int32
+        example: 222
+      - name: date
+        in: query
+        description: Fecha de aplicación
+        required: true
+        schema:
+          type: string
+          format: date-time
+        example: '2023-11-23T21:30:43'
+      responses:
+        '200':
+          description: "(OK) La tarifa se obtuvo correctamente"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetPriceResponse"
+        '404':
+          description: "(Not Found) No existe tarifa de precio a aplicar"
+        '400':
+          description: "(Bad Request) Los datos enviados son incorrectos o hay datos
+            obligatorios no enviados"
+        '500':
+          description: Error en servidor
+components:
+  schemas:
+    GetPriceResponse:
+      type: object
+      properties:
+        brandId:
+          type: integer
+          format: int32
+          description: Identificador de la marca
+        productId:
+          type: integer
+          format: int32
+          description: Identificador del producto
+        priceList:
+          type: integer
+          format: int32
+          description: Identificador de la tarifa de precios
+        startDate:
+          type: string
+          format: date-time
+          description: Fecha a partir de la cual se aplica el precio tarifa
+        endDate:
+          type: string
+          format: date-time
+          description: Fecha hasta la que se aplica el precio tarifa
+        price:
+          type: number
+          format: double
+          description: Precio del producto
