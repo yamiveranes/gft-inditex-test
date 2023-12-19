@@ -1,0 +1,191 @@
+{
+	"info": {
+		"_postman_id": "f9c15a73-e143-4b4f-9df2-ef6464b4602a",
+		"name": "Inditex Test API",
+		"description": "Contact Support:\n Email: @test.dev",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Obtiene el precio final y la tarifa a aplicar para un producto de una marca",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let requestData = pm.collectionVariables.get(\"requestData\");",
+							"let responseData = pm.collectionVariables.get(\"responseData\");",
+							"",
+							"if(!requestData || requestData.length == 0) {",
+							"    let brand = 1;",
+							"    let product = 35455;",
+							"",
+							"    requestData = [",
+							"        {brand: brand, product: product, date: \"2020-06-14T10:00:00\"},",
+							"        {brand: brand, product: product, date: \"2020-06-14T16:00:00\"},",
+							"        {brand: brand, product: product, date: \"2020-06-14T21:00:00\"},",
+							"        {brand: brand, product: product, date: \"2020-06-15T10:00:00\"},",
+							"        {brand: brand, product: product, date: \"2020-06-16T21:00:00\"},",
+							"",
+							"    ];",
+							"",
+							"",
+							"    responseData = [",
+							"        {brandId:brand, productId:product, priceList:1, startDate:\"2020-06-14T00:00:00\", endDate:\"2020-12-31T23:59:59\", price:35.5},",
+							"        {brandId:brand, productId:product, priceList:2, startDate:\"2020-06-14T15:00:00\", endDate:\"2020-06-14T18:30:00\", price:25.45},",
+							"        {brandId:brand, productId:product, priceList:1, startDate:\"2020-06-14T00:00:00\", endDate:\"2020-12-31T23:59:59\",\"price\":35.5},",
+							"        {brandId:brand, productId:product, priceList:3, startDate:\"2020-06-15T00:00:00\", endDate:\"2020-06-15T11:00:00\",\"price\":30.5},",
+							"        {brandId:brand, productId:product, priceList:4, startDate:\"2020-06-15T16:00:00\", endDate:\"2020-12-31T23:59:59\",\"price\":38.95},",
+							"    ];",
+							"}",
+							"",
+							"let currentData = requestData.shift();",
+							"let expectResponse = responseData.shift();",
+							"console.log(currentData)",
+							"pm.collectionVariables.set(\"brandId\", currentData.brand);",
+							"pm.collectionVariables.set(\"productId\", currentData.product);",
+							"pm.collectionVariables.set(\"date\", currentData.date);",
+							"pm.collectionVariables.set(\"expectResponse\", expectResponse);",
+							"pm.collectionVariables.set(\"requestData\", requestData);",
+							"pm.collectionVariables.set(\"responseData\", responseData);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const requestData = pm.collectionVariables.get(\"requestData\");",
+							"const expectResponse = pm.collectionVariables.get(\"expectResponse\");",
+							"",
+							"if (requestData && requestData.length > 0){",
+							"    postman.setNextRequest(\"Obtiene el precio final y la tarifa a aplicar para un producto de una marca\");",
+							"} else {",
+							"    postman.setNextRequest(null);",
+							"}",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response data value\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.eql(expectResponse);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "*/*"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/price?brandId={{brandId}}&productId={{productId}}&date={{date}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"price"
+					],
+					"query": [
+						{
+							"key": "brandId",
+							"value": "{{brandId}}"
+						},
+						{
+							"key": "productId",
+							"value": "{{productId}}"
+						},
+						{
+							"key": "date",
+							"value": "{{date}}",
+							"description": "(Required) Fecha de aplicación"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "brand",
+			"value": "1",
+			"type": "default"
+		},
+		{
+			"key": "product",
+			"value": "1",
+			"type": "default"
+		},
+		{
+			"key": "username",
+			"value": "",
+			"disabled": true
+		},
+		{
+			"key": "usernames",
+			"value": "",
+			"disabled": true
+		},
+		{
+			"key": "date",
+			"value": ""
+		},
+		{
+			"key": "expectResponse",
+			"value": ""
+		},
+		{
+			"key": "requestData",
+			"value": ""
+		},
+		{
+			"key": "responseData",
+			"value": ""
+		},
+		{
+			"key": "brandId",
+			"value": ""
+		},
+		{
+			"key": "productId",
+			"value": ""
+		}
+	]
+}

@@ -53,18 +53,25 @@ paths:
         example: '2023-11-23T21:30:43'
       responses:
         '200':
-          description: "(OK) La tarifa se obtuvo correctamente"
+          description: (OK) La tarifa se obtuvo correctamente
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/GetPriceResponse"
+                $ref: '#/components/schemas/GetPriceResponse'
         '404':
-          description: "(Not Found) No existe tarifa de precio a aplicar"
+          description: (Not Found) No existe tarifa de precio a aplicar
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
         '400':
-          description: "(Bad Request) Los datos enviados son incorrectos o hay datos
-            obligatorios no enviados"
-        '500':
-          description: Error en servidor
+          description: (Bad Request) Los datos enviados son incorrectos o hay datos obligatorios no enviados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+#        '500':
+#          description: Error en servidor
 components:
   schemas:
     GetPriceResponse:
@@ -94,3 +101,23 @@ components:
           type: number
           format: double
           description: Precio del producto
+    ApiError:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          description: Código de error
+        message:
+          type: string
+          description: Mensaje de error
+        timestamp:
+          type: string
+          format: date-time
+          description: Fecha y hora
+        details:
+          type: array
+          items:
+            type: string
+          description: Información detallada del error
+
